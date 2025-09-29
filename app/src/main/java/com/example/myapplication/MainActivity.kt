@@ -106,7 +106,9 @@ fun MainApp(modifier: Modifier = Modifier) {
             Button(onClick = {
                 val intent = Intent(context, SecondActivity::class.java)
                 context.startActivity(intent)
-            }) {
+            },
+                enabled = name.isNotBlank() && password.isNotBlank(),
+            ) {
                 Text(text = "Далее")
             }
         }

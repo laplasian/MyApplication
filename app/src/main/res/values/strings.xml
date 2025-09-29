@@ -42,5 +42,6 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
-    <string name="second_ccrean_greeting">второе окно</string>
+    <string name="second_ccrean_greeting">УСПЕШНЫЙ УСПЕХ!</string>
+    <string name="second_ccrean_return">return</string>
 </resources>

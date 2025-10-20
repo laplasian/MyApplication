@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.example.app.R
 
 class IconAdapter(private val items: List<IconItem>) :
     RecyclerView.Adapter<IconAdapter.IconViewHolder>() {
@@ -28,6 +29,7 @@ class IconAdapter(private val items: List<IconItem>) :
     override fun onBindViewHolder(holder: IconViewHolder, position: Int) {
         val item = items[position]
         holder.nameTextView.text = item.name
-        holder.iconImageView.load(item.iconResId)
+        holder.iconImageView.load(item.iconUrl)
     }
+
 }

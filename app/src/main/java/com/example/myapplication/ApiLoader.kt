@@ -30,7 +30,7 @@ class ApiLoader {
         }.body<ResultResponse<CharacterResponse>>()
 
         return response.results.map { ch ->
-            IconItem(name = ch.name, iconUrl = ch.image)
+            IconItem(name = ch.name, iconUrl = ch.image, Lastknownlocation = "", Firstseenin = "", status = ch.status)
         }
     }
 }

@@ -31,7 +31,7 @@
             tools:text="Название иконки" />
 
         <TextView
-            android:id="@+id/character_gene"
+            android:id="@+id/character_status"
             android:layout_width="109dp"
             android:layout_height="45dp"
             android:textSize="18sp"

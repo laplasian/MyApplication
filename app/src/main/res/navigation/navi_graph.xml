@@ -8,9 +8,6 @@
         android:id="@+id/MainFragment"
         android:name="com.example.myapplication.MainFragment"
         android:label="fragment_login"
-        tools:layout="@layout/viewholder" >
-<!--        <action-->
-<!--            android:id="@+id/action_loginFragment_to_main"-->
-<!--            app:destination="@id/main" />-->
+        tools:layout="@layout/activity_main" >
     </fragment>
 </navigation>

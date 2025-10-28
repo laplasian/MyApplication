@@ -23,14 +23,14 @@ class ApiLoader {
         }
     }
 
-    suspend fun getCharacters(page: Int = 1): List<IconItem> {
+    suspend fun getCharacters(page: Int = 1): List<ItemBase.IconItem> {
         val response = client.get {
             url("https://rickandmortyapi.com/api/character?page=$page")
             contentType(ContentType.Application.Json)
         }.body<ResultResponse<CharacterResponse>>()
 
         return response.results.map { ch ->
-            IconItem(name = ch.name, iconUrl = ch.image, Lastknownlocation = "", Firstseenin = "", status = ch.status)
+            ItemBase.IconItem(name = ch.name, iconUrl = ch.image, status = ch.status)
         }
     }
 }

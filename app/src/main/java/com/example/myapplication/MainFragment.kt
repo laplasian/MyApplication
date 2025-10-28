@@ -7,40 +7,69 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
+import com.example.myapplication.databinding.ViewholderBinding
+import kotlin.collections.isNotEmpty
 
-class MainFragment : Fragment(R.layout.viewholder) {
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: IconAdapter
-    private lateinit var api: ApiLoader
+class MainFragment : Fragment() {
+    var _binding: ViewholderBinding? = null
+    val binding get() = _binding!!
+    lateinit var adapter1: IconAdapter
+    val api = ApiLoader()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.viewholder, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = ViewholderBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.addItemDecoration(
+            DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
+        )
+        adapter1 = IconAdapter(emptyList())
+        binding.recyclerView.adapter = adapter1
 
-        recyclerView = view.findViewById(R.id.simple_recycler_view)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.setHasFixedSize(true)
-
-        adapter = IconAdapter(emptyList())
-        recyclerView.adapter = adapter
-
-        api = ApiLoader()
-
+        showLoading()
         viewLifecycleOwner.lifecycleScope.launch {
             try {
-                val icons = api.getCharacters(page = 1)
-                adapter = IconAdapter(icons)
-                recyclerView.adapter = adapter
-            } catch (t: Throwable) {
-                Toast.makeText(requireContext(), "Ошибка: ${t.message}", Toast.LENGTH_SHORT).show()
+                val characters = api.getCharacters(page = 1)
+                val itemsForAdapter = mutableListOf<ItemBase>()
+
+                if (characters.isNotEmpty()) {
+                    itemsForAdapter.add(ItemBase.TitleItem("Персонажи"))
+                    itemsForAdapter.addAll(characters)
+                }
+
+                adapter1.updateData(itemsForAdapter)
+
+                binding.progressBar.visibility = View.GONE
+                binding.recyclerView.visibility = View.VISIBLE
+            } catch (e: Throwable) {
+                showError(e.message ?: "Неизвестная ошибка")
             }
         }
+    }
+
+    fun showLoading() {
+        binding.progressBar.visibility = View.VISIBLE
+        binding.recyclerView.visibility = View.GONE
+        binding.errorText.visibility = View.GONE
+    }
+
+
+    fun showError(message: String) {
+        binding.progressBar.visibility = View.GONE
+        binding.recyclerView.visibility = View.GONE
+        binding.errorText.visibility = View.VISIBLE
+        binding.errorText.text = "Ошибка: $message"
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
